@@ -10,7 +10,7 @@ void setup() {
 
 void loop() {
 
-  //test contador
+  //test contador  si este if anda hay que comentarlo y descomentar el otro
   if (digitalRead(pinEntrada == HIGH))
   {
     contador++;
