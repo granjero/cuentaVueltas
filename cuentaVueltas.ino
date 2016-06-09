@@ -1,37 +1,37 @@
-int pinEntrada = 7;
-unsigned long contador = 0;
-unsigned long tiempo;
+/*
+Contador con optoacoplador
+*/
 
-void setup() {
-  // put your setup code here, to run once:
-  pinMode(pinEntrada, INPUT);
+
+const byte pinIN = 2;
+volatile unsigned long contador = 0;
+unsigned long tiempo;
+unsigned long fin;
+
+#define intervalo 10000
+
+void setup()
+{
+  pinMode(pinIN, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pinIN), cuenta, RISING);
   Serial.begin(9600);
+  tiempo = millis();
+  fin = tiempo + intervalo;
 }
 
-void loop() {
-
-  //test contador  si este if anda hay que comentarlo y descomentar el otro
-  if (digitalRead(pinEntrada == HIGH))
+void loop()
+{
+  if (tiempo >= fin)
   {
-    contador++;
-    Serial.print(contador);
-    Serial.print("\n");
-  }
-  /*
-    //contador por minuto
-    tiempo = millis();
-    while (tiempo <= tiempo + 60000)
-    {
-      if (digitalRead(pinEntrada == HIGH))
-        {
-              contador++;
-        }
-    }
-
-    Serial.print("Cantidad de Vueltas en el Ultimo Minuto \n");
-    Serial.print(contador);
-    Serial.print("\n");
+    Serial.print("Cantidad de interrupciones en 10 seg =");
+    Serial.println(contador);
     contador = 0;
-    tiempo = 0;
-  */
+    tiempo = millis();
+    fin = tiempo + intervalo;
+  }
+}
+
+void cuenta()
+{
+  contador++;
 }
